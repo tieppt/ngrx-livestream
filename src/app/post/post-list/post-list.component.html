@@ -1,0 +1,45 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <div>
+    <nz-select
+      [formControl]="sortCtrl"
+      class="sorting"
+      nzPlaceHolder="Select sort order"
+      [nzAllowClear]="true"
+    >
+      <nz-option nzValue="asc" nzLabel="Asc"></nz-option>
+      <nz-option nzValue="desc" nzLabel="Desc"></nz-option>
+    </nz-select>
+  </div>
+  <i
+    *ngIf="vm.isLoading; else loaded"
+    nz-icon
+    nzType="loading"
+    nzTheme="outline"
+  ></i>
+  <ng-template #loaded>
+    <ng-container *ngIf="vm.posts.length; else noData">
+      <ng-container *ngFor="let post of vm.posts">
+        <nz-card nzHoverable style="width: 240px;" [nzCover]="coverTemplate">
+          <nz-card-meta
+            [nzTitle]="post.user?.username"
+            [nzDescription]="post.caption"
+            [nzAvatar]="avatarTemplate"
+          ></nz-card-meta>
+        </nz-card>
+        <ng-template #avatarTemplate>
+          <nz-avatar
+            [nzSrc]="post.user?.avatar"
+            nzIcon="user"
+            nzIconTheme="outline"
+          ></nz-avatar>
+        </ng-template>
+        <ng-template #coverTemplate>
+          <img alt="example" [src]="post.images[0]" />
+        </ng-template>
+      </ng-container>
+    </ng-container>
+    <ng-template #noData>
+      <nz-empty></nz-empty>
+    </ng-template>
+  </ng-template>
+</ng-container>
